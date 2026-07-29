@@ -1,0 +1,11 @@
+.env
+channels.txt
+stats.txt
+buttons.json
+templates.json
+*.bak-*
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+myenv/
