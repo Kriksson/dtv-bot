@@ -1,0 +1,21 @@
+[Unit]
+Description=DTV Telegram bot
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=dtvbot
+Group=dtvbot
+WorkingDirectory=/opt/dtv-bot/app
+EnvironmentFile=/opt/dtv-bot/config/runtime.env
+ExecStart=/opt/dtv-bot/venv/bin/python -m app.main
+Restart=always
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ReadWritePaths=/opt/dtv-bot/data /opt/dtv-bot/config
+
+[Install]
+WantedBy=multi-user.target

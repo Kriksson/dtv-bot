@@ -1,34 +1,33 @@
-# DTV Bots
+# DTV Bot
 
-Telegram publication bot with channel management, post previews, inline buttons, templates, usage statistics and a quick-posting mode.
+Асинхронный Telegram-бот для публикации постов в каналы, проверки подписки по кнопке, шаблонов и локальной пагинации.
 
-The original server contained two identical deployments that differed only by Telegram token. This repository keeps one configurable codebase instead of duplicating the same project.
+## Возможности
 
-## Setup
+- `aiogram 3` и SQLite: меню и страницы каналов не обходят Telegram API.
+- Доступ только в личном чате и только администраторам из `ADMIN_USER_IDS` (рекомендуемый способ).
+- Добавление каналов пересылкой сообщения, быстрый режим добавления, шаблоны и статистика.
+- Фоновая проверка прав во всех сохранённых каналах.
+- Подписочная кнопка: показывает результат проверки подписки и учитывает успешный клик.
 
-1. Create a virtual environment and install dependencies:
+## Запуск
 
-   ```powershell
-   python -m venv .venv
-   .\.venv\Scripts\Activate.ps1
-   pip install -r requirements.txt
-   ```
+Требуется Python 3.11+.
 
-2. Copy `.env.example` to `.env` and set `TELEGRAM_BOT_TOKEN` and a strong `ADMIN_PASSWORD`.
-3. Start the bot:
+```powershell
+cd C:\Users\kkrik\Downloads\dtv_bot
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+notepad .env
+python -m app.main
+```
 
-   ```powershell
-   python bot.py
-   ```
+В `.env` заполните `BOT_TOKEN` и `ADMIN_USER_IDS`. Получить свой ID можно у `@userinfobot`.
 
-The bot creates its runtime files (`channels.txt`, `stats.txt`, `buttons.json`, `templates.json`) beside `bot.py`. They are intentionally ignored by Git because they can contain deployment-specific channel and user data.
+Бот должен быть администратором каждого канала, куда публикует сообщения; для проверки подписки ему также нужен доступ к участникам канала.
 
-## Security
+## Почему интерфейс быстрый
 
-- Never commit `.env` or runtime data files.
-- Revoke and recreate any Telegram bot token that was ever hardcoded or shared.
-- Restrict bot access to trusted administrators. The current password gate is suitable only for a small private deployment.
-
-## Author
-
-Copyright (c) 2026 Kriksson.
+Показ списка и переключение страниц используют SQLite. Telegram API вызывается только при добавлении канала, фоновой проверке прав, публикации и нажатии подписочной кнопки. Поэтому открытие страницы не зависит от общего количества каналов.
